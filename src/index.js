@@ -1,5 +1,6 @@
 import './css/styles.css';
 import Notiflix from 'notiflix';
+import { fetchCountries } from './fetchCountries';
 const debounce = require('lodash.debounce');
 
 const DEBOUNCE_DELAY = 300;
@@ -16,24 +17,15 @@ function onInputListener(event) {
   if (!name) {
     return;
   }
-  fetchCountries(name);
-}
-
-function fetchCountries(name) {
-  fetch(`https://restcountries.com/v3.1/name/${name}`)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(response.status);
-      }
-      return response.json();
+  fetchCountries(name)
+    .then(countries => {
+      onMarkUp(countries);
     })
-    .then(country => {
-      onMarkUp(country);
-    })
-    .catch(error => {
+    .catch(() => {
       Notiflix.Notify.failure('Oops, there is no country with that name');
     });
 }
+
 function onMarkUp(countries) {
   if (countries.length > 10) {
     refs.info.innerHTML = '';
