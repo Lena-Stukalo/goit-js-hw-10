@@ -22,6 +22,8 @@ function onInputListener(event) {
       onMarkUp(countries);
     })
     .catch(() => {
+      refs.info.innerHTML = '';
+      refs.list.innerHTML = '';
       Notiflix.Notify.failure('Oops, there is no country with that name');
     });
 }
